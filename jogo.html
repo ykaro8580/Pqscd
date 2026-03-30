@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pique Esconde</title>
+
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: Arial;
+            text-align: center;
+        }
+
+        h1 {
+            color: #00ffcc;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #00ffcc;
+        }
+
+        button:hover {
+            background-color: #00ccaa;
+        }
+
+        #log {
+            margin-top: 20px;
+            padding: 15px;
+            background: #222;
+            border-radius: 10px;
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Pique Esconde</h1>
+<p>Escolha onde se esconder:</p>
+
+<button onclick="jogar('Sala')">Sala</button>
+<button onclick="jogar('Cozinha')">Cozinha</button>
+<button onclick="jogar('Quarto')">Quarto</button>
+
+<div id="log"></div>
+
+<script>
+
+let pontpc = 0;
+let pontpl = 0;
+let rodada = 1;
+
+function adicionarLinha(texto) {
+    let log = document.getElementById("log");
+    log.innerHTML += texto + "<br>";
+}
+
+function limparLog() {
+    document.getElementById("log").innerHTML = "";
+}
+
+function esperar(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function jogar(escolhaJogador) {
+
+    if (rodada > 3) {
+        adicionarLinha("⚠️ O jogo já terminou!");
+        return;
+    }
+
+    limparLog();
+
+    adicionarLinha(`🎮 Rodada ${rodada}`);
+    adicionarLinha(`Você escolheu: ${escolhaJogador}`);
+
+    // contagem
+    for (let i = 1; i <= 3; i++) {
+        adicionarLinha("Contando... " + i);
+        await esperar(700);
+    }
+
+    let opcoes = ["Sala", "Cozinha", "Quarto"];
+    let escolhaPC = opcoes[Math.floor(Math.random() * opcoes.length)];
+
+    adicionarLinha("👀 Procurando...");
+    await esperar(1000);
+
+    adicionarLinha(`🔎 Vou procurar na(o) ${escolhaPC}`);
+    await esperar(1000);
+
+    if (escolhaJogador === escolhaPC) {
+        adicionarLinha("💀 Te achei!");
+        pontpc++;
+    } else {
+        adicionarLinha("🏃 Você escapou!");
+        pontpl++;
+    }
+
+    adicionarLinha(`📊 Placar: ${pontpl} x ${pontpc}`);
+
+    rodada++;
+
+    if (rodada > 3) {
+        adicionarLinha("🏁 Fim do jogo!");
+
+        if (pontpl > pontpc) {
+            adicionarLinha("🏆 Você venceu!");
+        } else if (pontpc > pontpl) {
+            adicionarLinha("🤖 PC venceu!");
+        } else {
+            adicionarLinha("🤝 Empate!");
+        }
+    }
+}
+
+</script>
+
+</body>
+</html>
