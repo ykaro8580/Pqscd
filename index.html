@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jogo do Pique Esconde</title>
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: Arial;
+            text-align: center;
+        }
+        h1 {
+            color: #ff8800;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #ff8800;
+        }
+        button:hover {
+            background-color: #ff8800;
+        }
+        #resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background: #222;
+            border-radius: 10px;
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Jogo do Pique Esconde</h1>
+    <p>Bem-vindo ao jogo do Pique Esconde! Escolha um lugar para se esconder e tente não ser encontrado pelo PC.</p>
+    <p>Escolha um lugar para se esconder:</p>
+
+    <button onclick="esconder('Sala')">Sala</button>
+    <button onclick="esconder('Cozinha')">Cozinha</button>
+    <button onclick="esconder('Quarto')">Quarto</button>
+
+    <p id="resultado"></p>
+
+    <script>
+
+        let pontpc = 0;
+        let pontpl = 0;
+        let rodada = 1;
+
+        function esconder(lugar) {
+            const lugares = ['Sala', 'Cozinha', 'Quarto'];
+            const escolhaPC = lugares[Math.floor(Math.random() * lugares.length)];
+
+            if (lugar === escolhaPC) {
+                pontpc++;
+                document.getElementById('resultado').innerText = `O PC encontrou você! O PC escolheu ${escolhaPC}.`;
+            } else {
+                pontpl++;
+                document.getElementById('resultado').innerText = `Você se escondeu com sucesso! O PC escolheu ${escolhaPC}.`;
+            }
+
+            document.getElementById('resultado').innerText += ` Placar: Jogador ${pontpl} x PC ${pontpc}`;
+
+            rodada++;
+            if (rodada > 3) {
+                if (pontpl > pontpc) {
+                    document.getElementById('resultado').innerText += " Você venceu!";
+                } else if (pontpc > pontpl) {
+                    document.getElementById('resultado').innerText += " O PC venceu!";
+                } else {
+                    document.getElementById('resultado').innerText += " Empate!";
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
